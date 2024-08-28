@@ -1304,8 +1304,8 @@ github.com/rancher/norman v0.0.0-20240708202514-a0127673d1b9 h1:AlRMRs5mHJcdiK83
 github.com/rancher/norman v0.0.0-20240708202514-a0127673d1b9/go.mod h1:dyjfXBsNiroPWOdUZe7diUOUSLf6HQ/r2kEpwH/8zas=
 github.com/rancher/qase-go/client v0.0.0-20240308221502-c3b2635212be h1:+m6Jv5sAI4i5NwVYYUccJUK+ecp8eHInkZfMD8BgNjU=
 github.com/rancher/qase-go/client v0.0.0-20240308221502-c3b2635212be/go.mod h1:NP3xboG+t2p+XMnrcrJ/L384Ki0Cp3Pww/X+vm5Jcy0=
-github.com/rancher/rancher v0.0.0-20240821173544-58647454340d h1:b6mDOGyLKjmaD3WVyGIMuDBs0Tt61Cln5tYrzHcsRDA=
-github.com/rancher/rancher v0.0.0-20240821173544-58647454340d/go.mod h1:E4Yi9oj21npFjGK3gYPDl54oYxp4KJWjCYsvDlQ9BFc=
+github.com/rancher/rancher v0.0.0-20240829235134-538ce3f0770b h1:5TGKLamRcEdVtTsp1kZrsKfgJxpbPgfcPuWX9Do/UO4=
+github.com/rancher/rancher v0.0.0-20240829235134-538ce3f0770b/go.mod h1:LQULRVV4nv6vePojBjRGq2f2nM99ksPop1M6iFyFriY=
 github.com/rancher/rancher/pkg/apis v0.0.0-20240821173544-58647454340d h1:8Jj/FV48AFTbivWiJOk59YPTRYHi4HS1qoLUv+m4uuY=
 github.com/rancher/rancher/pkg/apis v0.0.0-20240821173544-58647454340d/go.mod h1:aQ7WsDz/lGZlBVr2g5V7N0zViuXnDFdo2TYXFKYDBQ4=
 github.com/rancher/rke v1.6.0 h1:fHdygmtPF1cWXuiYXfwgG4hKvt0n4l57SwCxquRJSfs=
@@ -1382,8 +1382,8 @@ github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-github.com/susesgartner/shepherd v0.0.0-20240827210253-626cbc1d50a9 h1:kb2ESjva2sd2ZJvNmVlsXTd41rPCpksSZLdD5FLBRl8=
-github.com/susesgartner/shepherd v0.0.0-20240827210253-626cbc1d50a9/go.mod h1:nVphr8v6qtXd0pth8wMCF9U5eKEPBIaD5+HQCH19uRw=
+github.com/susesgartner/shepherd v0.0.0-20240831035605-d82a09721ac9 h1:9UzJhcWPzACFmnBXl4OVrJWWe1H2OVzjajnTg+Ndnn8=
+github.com/susesgartner/shepherd v0.0.0-20240831035605-d82a09721ac9/go.mod h1:nVphr8v6qtXd0pth8wMCF9U5eKEPBIaD5+HQCH19uRw=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/tmccombs/hcl2json v0.3.3 h1:+DLNYqpWE0CsOQiEZu+OZm5ZBImake3wtITYxQ8uLFQ=

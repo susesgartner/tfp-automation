@@ -26,9 +26,9 @@ require (
 	github.com/antihax/optional v1.0.0
 	github.com/gruntwork-io/terratest v0.42.0
 	github.com/rancher/norman v0.0.0-20240708202514-a0127673d1b9
-	github.com/rancher/rancher v0.0.0-20240821173544-58647454340d
+	github.com/rancher/rancher v0.0.0-20240829235134-538ce3f0770b
 	github.com/rancher/rancher/pkg/apis v0.0.0
-	github.com/rancher/shepherd v0.0.0-20240820200736-1dc64edfa0a7
+	github.com/rancher/shepherd v0.0.0-20240829194625-ffbf7228bbc0
 	github.com/sirupsen/logrus v1.9.3
 )
 
@@ -218,4 +218,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace github.com/rancher/shepherd => github.com/susesgartner/shepherd v0.0.0-20240827210253-626cbc1d50a9
+replace github.com/rancher/shepherd => github.com/susesgartner/shepherd v0.0.0-20240831035605-d82a09721ac9
