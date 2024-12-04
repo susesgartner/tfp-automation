@@ -2,7 +2,9 @@ package config
 
 import (
 	rkev1 "github.com/rancher/rancher/pkg/apis/rke.cattle.io/v1"
+	"github.com/rancher/shepherd/clients/rancher"
 	management "github.com/rancher/shepherd/clients/rancher/generated/management/v3"
+	"github.com/rancher/shepherd/pkg/config/operations"
 	"github.com/rancher/tfp-automation/config/authproviders"
 	aws "github.com/rancher/tfp-automation/config/nodeproviders/aws"
 	azure "github.com/rancher/tfp-automation/config/nodeproviders/azure"
@@ -10,6 +12,7 @@ import (
 	harvester "github.com/rancher/tfp-automation/config/nodeproviders/harvester"
 	linode "github.com/rancher/tfp-automation/config/nodeproviders/linode"
 	vsphere "github.com/rancher/tfp-automation/config/nodeproviders/vsphere"
+	"github.com/rancher/tfp-automation/defaults/configs"
 )
 
 type TestClientName string
@@ -211,4 +214,17 @@ type TerratestConfig struct {
 	PSACT                     string     `json:"psact,omitempty" yaml:"psact,omitempty"`
 	SnapshotInput             Snapshots  `json:"snapshotInput,omitempty" yaml:"snapshotInput,omitempty"`
 	TFLogging                 bool       `json:"tfLogging,omitempty" yaml:"tfLogging,omitempty"`
+}
+
+func LoadTFPConfigs(cattleConfig map[string]any) (*rancher.Config, *TerraformConfig, *TerratestConfig) {
+	rancherConfig := new(rancher.Config)
+	operations.LoadObjectFromMap(configs.Rancher, cattleConfig, rancherConfig)
+
+	terraformConfig := new(TerraformConfig)
+	operations.LoadObjectFromMap(TerraformConfigurationFileKey, cattleConfig, terraformConfig)
+
+	terratestConfig := new(TerratestConfig)
+	operations.LoadObjectFromMap(TerratestConfigurationFileKey, cattleConfig, terraformConfig)
+
+	return rancherConfig, terraformConfig, terratestConfig
 }
