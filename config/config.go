@@ -178,7 +178,6 @@ type TerraformConfig struct {
 	MachineConfigName                   string                       `json:"machineConfigName,omitempty" yaml:"machineConfigName,omitempty"`
 	Module                              string                       `json:"module,omitempty" yaml:"module,omitempty"`
 	MultiCluster                        bool                         `json:"multiCluster,omitempty" yaml:"multiCluster,omitempty"`
-	NetworkPlugin                       string                       `json:"networkPlugin,omitempty" yaml:"networkPlugin,omitempty"`
 	NodeTemplateName                    string                       `json:"nodeTemplateName,omitempty" yaml:"nodeTemplateName,omitempty"`
 	PrivateKeyPath                      string                       `json:"privateKeyPath,omitempty" yaml:"privateKeyPath,omitempty"`
 	PrivateRegistries                   *PrivateRegistries           `json:"privateRegistries,omitempty" yaml:"privateRegistries,omitempty"`
@@ -224,7 +223,7 @@ func LoadTFPConfigs(cattleConfig map[string]any) (*rancher.Config, *TerraformCon
 	operations.LoadObjectFromMap(TerraformConfigurationFileKey, cattleConfig, terraformConfig)
 
 	terratestConfig := new(TerratestConfig)
-	operations.LoadObjectFromMap(TerratestConfigurationFileKey, cattleConfig, terraformConfig)
+	operations.LoadObjectFromMap(TerratestConfigurationFileKey, cattleConfig, terratestConfig)
 
 	return rancherConfig, terraformConfig, terratestConfig
 }

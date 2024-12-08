@@ -3,6 +3,7 @@ package aws
 type Config struct {
 	AMI                          string   `json:"ami,omitempty" yaml:"ami,omitempty"`
 	AWSInstanceType              string   `json:"awsInstanceType,omitempty" yaml:"awsInstanceType,omitempty"`
+	VolumeType                   string   `json:"volumeType,omitempty" yaml:"volumeType,omitempty"`
 	AWSKeyName                   string   `json:"awsKeyName,omitempty" yaml:"awsKeyName,omitempty"`
 	AWSRootSize                  int64    `json:"awsRootSize,omitempty" yaml:"awsRootSize,omitempty"`
 	AWSSecurityGroupNames        []string `json:"awsSecurityGroupNames,omitempty" yaml:"awsSecurityGroupNames,omitempty"`

@@ -23,6 +23,7 @@ func SetAWSRKE1Provider(nodeTemplateBlockBody *hclwrite.Body, terraformConfig *c
 	awsConfigBlockBody.SetAttributeValue(defaults.AccessKey, cty.StringVal(terraformConfig.AWSCredentials.AWSAccessKey))
 	awsConfigBlockBody.SetAttributeValue(defaults.SecretKey, cty.StringVal(terraformConfig.AWSCredentials.AWSSecretKey))
 	awsConfigBlockBody.SetAttributeValue(amazon.AMI, cty.StringVal(terraformConfig.AWSConfig.AMI))
+	awsConfigBlockBody.SetAttributeValue(amazon.VolumeType, cty.StringVal(terraformConfig.AWSConfig.VolumeType))
 	awsConfigBlockBody.SetAttributeValue(defaults.Region, cty.StringVal(terraformConfig.AWSConfig.Region))
 
 	awsSecGroupsExpression := fmt.Sprintf(`["%s"]`, terraformConfig.AWSConfig.AWSSecurityGroupNames[0])

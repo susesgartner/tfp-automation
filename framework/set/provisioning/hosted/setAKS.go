@@ -51,7 +51,7 @@ func SetAKS(terraformConfig *config.TerraformConfig, clusterName, k8sVersion str
 	aksConfigBlockBody.SetAttributeValue(azure.ResourceLocation, cty.StringVal(terraformConfig.AzureConfig.ResourceLocation))
 	aksConfigBlockBody.SetAttributeValue(azure.DNSPrefix, cty.StringVal(terraformConfig.HostnamePrefix))
 	aksConfigBlockBody.SetAttributeValue(defaults.KubernetesVersion, cty.StringVal(k8sVersion))
-	aksConfigBlockBody.SetAttributeValue(azure.NetworkPlugin, cty.StringVal(terraformConfig.NetworkPlugin))
+	aksConfigBlockBody.SetAttributeValue(azure.NetworkPlugin, cty.StringVal(terraformConfig.CNI))
 	aksConfigBlockBody.SetAttributeValue(azure.VirtualNetwork, cty.StringVal(terraformConfig.AzureConfig.Vnet))
 	aksConfigBlockBody.SetAttributeValue(azure.Subnet, cty.StringVal(terraformConfig.AzureConfig.Subnet))
 	aksConfigBlockBody.SetAttributeValue(azure.NetworkDNSServiceIP, cty.StringVal(terraformConfig.AzureConfig.NetworkDNSServiceIP))

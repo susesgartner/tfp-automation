@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
 	"github.com/rancher/shepherd/clients/rancher"
+	"github.com/rancher/shepherd/pkg/config/operations"
 	"github.com/rancher/tfp-automation/config"
 	"github.com/rancher/tfp-automation/defaults/modules"
 	"github.com/rancher/tfp-automation/framework/set/defaults"
@@ -111,10 +112,11 @@ func createRequiredProviders(rootBody *hclwrite.Body, terraformConfig *config.Te
 	customModule := false
 
 	if terraformConfig.MultiCluster {
-		for _, terratestConfig := range configMap {
-			module := terratestConfig["terraform"].(config.TerraformConfig).Module
+		for _, clusterConfig := range configMap {
+			tfConfig := new(config.TerraformConfig)
+			operations.LoadObjectFromMap(config.TerraformConfigurationFileKey, clusterConfig, tfConfig)
 
-			if strings.Contains(module, defaults.Custom) {
+			if strings.Contains(tfConfig.Module, defaults.Custom) {
 				customModule = true
 			}
 		}
@@ -146,7 +148,7 @@ func createRequiredProviders(rootBody *hclwrite.Body, terraformConfig *config.Te
 	}
 
 	if strings.Contains(terraformConfig.Module, defaults.Custom) || strings.Contains(terraformConfig.Module, defaults.Airgap) ||
-		strings.Contains(terraformConfig.Module, defaults.Import) {
+		strings.Contains(terraformConfig.Module, defaults.Import) || customModule {
 		awsProvBlock := rootBody.AppendNewBlock(defaults.Provider, []string{defaults.Aws})
 		awsProvBlockBody := awsProvBlock.Body()
 

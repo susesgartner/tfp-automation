@@ -21,6 +21,7 @@ const (
 
 	NodeGroups   = "node_groups"
 	InstanceType = "instance_type"
+	VolumeType   = "volume_type"
 	DesiredSize  = "desired_size"
 	MaxSize      = "max_size"
 	MinSize      = "min_size"

@@ -10,7 +10,7 @@ import (
 
 const (
 	moduleKey    = "module"
-	cniKey       = "networkPlugin"
+	cniKey       = "cni"
 	awsConfigKey = "awsConfig"
 	amiKey       = "ami"
 )
