@@ -5,14 +5,16 @@ import (
 
 	"github.com/rancher/shepherd/pkg/config/operations"
 	"github.com/rancher/shepherd/pkg/config/operations/permutations"
+	namegen "github.com/rancher/shepherd/pkg/namegenerator"
 	"github.com/rancher/tfp-automation/config"
 )
 
 const (
-	moduleKey    = "module"
-	cniKey       = "cni"
-	awsConfigKey = "awsConfig"
-	amiKey       = "ami"
+	moduleKey         = "module"
+	cniKey            = "cni"
+	awsConfigKey      = "awsConfig"
+	amiKey            = "ami"
+	resourcePrefixKey = "resourcePrefix"
 )
 
 func CreateModulePermutation(cattleConfig map[string]any) (*permutations.Permutation, error) {
@@ -80,4 +82,35 @@ func CreateAMIRelationships(cattleConfig map[string]any) ([]permutations.Relatio
 	}
 
 	return amiRelationships, err
+}
+
+func UniquifyTerraform(cattleConfigs []map[string]any) ([]map[string]any, error) {
+	resourcePrefix := []string{config.TerraformConfigurationFileKey, resourcePrefixKey}
+	var uniqueCattleConfigs []map[string]any
+	for _, cattleConfig := range cattleConfigs {
+		cattleConfig, err := uniquifyField(resourcePrefix, cattleConfig)
+		if err != nil {
+			return nil, err
+		}
+
+		uniqueCattleConfigs = append(uniqueCattleConfigs, cattleConfig)
+	}
+
+	return uniqueCattleConfigs, nil
+}
+
+func uniquifyField(keyPath []string, cattleConfig map[string]any) (map[string]any, error) {
+	keyPathValue, err := operations.GetValue(keyPath, cattleConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	keyPathValue = namegen.AppendRandomString(keyPathValue.(string))
+
+	uniqueCattleConfig, err := operations.ReplaceValue(keyPath, keyPathValue, cattleConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	return uniqueCattleConfig, nil
 }

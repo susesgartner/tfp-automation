@@ -66,8 +66,16 @@ func (p *OSValidationTestSuite) SetupSuite() {
 	cniPermutation, err := permutationsdata.CreateCNIPermutation(p.cattleConfig)
 	require.NoError(p.T(), err)
 
-	p.permutedConfigs, err = permutations.Permute([]permutations.Permutation{*modulePermutation, *cniPermutation}, p.cattleConfig)
+	permutedConfigs, err := permutations.Permute([]permutations.Permutation{*modulePermutation, *cniPermutation}, p.cattleConfig)
 	require.NoError(p.T(), err)
+
+	p.permutedConfigs, err = permutationsdata.UniquifyTerraform(permutedConfigs)
+	require.NoError(p.T(), err)
+
+	for _, cattleConfig := range p.permutedConfigs {
+		_, terraformConfig, _ := config.LoadTFPConfigs(cattleConfig)
+		logrus.Info(terraformConfig.ResourcePrefix)
+	}
 
 	rancherConfig, terraformConfig, terratestConfig := config.LoadTFPConfigs(p.permutedConfigs[0])
 
@@ -90,7 +98,7 @@ func (p *OSValidationTestSuite) TestDynamicOSValidation() {
 	}
 
 	for ami, batch := range configBatches {
-		testUser, testPassword, clusterName, poolName := configs.CreateTestCredentials()
+		testUser, testPassword := configs.CreateTestCredentials()
 
 		var clusterIDs []string
 		p.Run("Parallel_Provisioning_"+ami, func() {
@@ -102,7 +110,7 @@ func (p *OSValidationTestSuite) TestDynamicOSValidation() {
 				logrus.Infof("Provisioning Cluster Type: %s, "+"K8s Version: %s, "+"CNI: %s", terraformConfig.Module, terratestConfig.KubernetesVersion, terraformConfig.CNI)
 			}
 
-			clusterIDs = provisioning.Provision(p.T(), p.client, p.rancherConfig, p.terraformConfig, p.terratestConfig, testUser, testPassword, clusterName, poolName, p.terraformOptions, batch)
+			clusterIDs = provisioning.Provision(p.T(), p.client, p.rancherConfig, p.terraformConfig, p.terratestConfig, testUser, testPassword, p.terraformOptions, batch)
 			time.Sleep(2 * time.Minute)
 			provisioning.VerifyClustersState(p.T(), p.client, clusterIDs)
 		})
