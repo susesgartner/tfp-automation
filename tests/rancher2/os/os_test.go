@@ -78,19 +78,19 @@ func (o *OSValidationTestSuite) SetupSuite() {
 	permutedConfigs, err := permutations.Permute([]permutations.Permutation{*modulePermutation, *cniPermutation}, o.cattleConfig)
 	require.NoError(o.T(), err)
 
-	o.permutedConfigs, err = provisioning.UniquifyTerraform(permutedConfigs)
+	o.permutedConfigs, err = provisioning.UniquifyConfigs(permutedConfigs)
 	require.NoError(o.T(), err)
 
-	_, terraformConfig, terratestConfig, _ := config.LoadTFPConfigs(o.permutedConfigs[0])
+	o.rancherConfig, o.terraformConfig, o.terratestConfig, _ = config.LoadTFPConfigs(o.permutedConfigs[0])
 
 	o.awsCredentials = cloudcredentials.AmazonEC2CredentialConfig{
-		AccessKey:     terraformConfig.AWSCredentials.AWSAccessKey,
-		SecretKey:     terraformConfig.AWSCredentials.AWSSecretKey,
-		DefaultRegion: terraformConfig.AWSConfig.Region,
+		AccessKey:     o.terraformConfig.AWSCredentials.AWSAccessKey,
+		SecretKey:     o.terraformConfig.AWSCredentials.AWSSecretKey,
+		DefaultRegion: o.terraformConfig.AWSConfig.Region,
 	}
 
 	_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, o.terratestConfig.PathToRepo, "")
-	terraformOptions := framework.Setup(o.T(), terraformConfig, terratestConfig, keyPath)
+	terraformOptions := framework.Setup(o.T(), o.terraformConfig, o.terratestConfig, keyPath)
 	o.terraformOptions = terraformOptions
 }
 

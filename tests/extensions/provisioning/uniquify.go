@@ -13,6 +13,28 @@ const (
 	resourcePrefixKey = "resourcePrefix"
 )
 
+func UniquifyConfigs(cattleConfigs []map[string]any) ([]map[string]any, error) {
+	resourcePrefix := []string{config.TerraformConfigurationFileKey, resourcePrefixKey}
+	var uniqueCattleConfigs []map[string]any
+	for _, cattleConfig := range cattleConfigs {
+		resourcePrefixValue, err := operations.GetValue(resourcePrefix, cattleConfig)
+		if err != nil {
+			return nil, err
+		}
+
+		resourceName := namegen.AppendRandomString(resourcePrefixValue.(string))
+
+		_, err = operations.ReplaceValue([]string{config.TerraformConfigurationFileKey, resourcePrefixKey}, resourceName, cattleConfig)
+		if err != nil {
+			return nil, err
+		}
+
+		uniqueCattleConfigs = append(uniqueCattleConfigs, cattleConfig)
+	}
+
+	return uniqueCattleConfigs, nil
+}
+
 func UniquifyTerraform(cattleConfigs []map[string]any) ([]map[string]any, error) {
 	resourcePrefix := []string{config.TerraformConfigurationFileKey, resourcePrefixKey}
 	var uniqueCattleConfigs []map[string]any

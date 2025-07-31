@@ -16,28 +16,40 @@
 set -e 
 
 # Validate user input
+
 if [ $# -ne 2 ]; then
   echo "Usage: $0 <provider> <version>"
   exit 1
 fi
 
+# Set global vars
+
 PROVIDER=$1
 VERSION=$2
 VERSION_TAG=$(echo $2 | cut -c 2-)
 
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-ARCH=$(uname -m)
-
-if [ "$OS" = "darwin" ] && [ "$ARCH" = "arm64" ]; then
-  PLATFORM="darwin_arm64"
-else
-  PLATFORM="linux_amd64"
+# Check for unzip
+if ! command -v "unzip" &> /dev/null; then
+  echo "Missing required tool unzip. unzip can be installed via apt on Linux"
+  exit 1
 fi
 
 # Download binary
-DIR=~/.terraform.d/plugins/terraform.local/local/${PROVIDER}/${VERSION_TAG}/${PLATFORM}
-(umask u=rwx,g=rwx,o=rwx && mkdir -p $DIR)
-curl -sfL https://github.com/rancher/terraform-provider-${PROVIDER}/releases/download/${VERSION}/terraform-provider-${PROVIDER}_${VERSION_TAG}_${PLATFORM}.zip | gunzip -c - > ${DIR}/terraform-provider-${PROVIDER}
+
+OS_PLATFORM=$(uname -sp | tr '[:upper:] ' '[:lower:]_' | sed 's/x86_64/amd64/' | sed 's/i386/amd64/' | sed 's/arm/arm64/')
+
+DIR=~/.terraform.d/plugins/terraform.local/local/${PROVIDER}/${VERSION_TAG}/${OS_PLATFORM}
+mkdir -p $DIR
+
+# unzip can't handle files from stdin, so we create a temporary file
+ZIP_FILE=terraform-provider-${PROVIDER}_${VERSION_TAG}_${OS_PLATFORM}.zip
+curl -sfL https://github.com/rancher/terraform-provider-${PROVIDER}/releases/download/${VERSION}/${ZIP_FILE} -o ${ZIP_FILE}
+
+unzip $ZIP_FILE -d ${DIR}
+rm ${ZIP_FILE}
+
+#Note the required 'v' in front of VERSION_TAG
+mv ${DIR}/terraform-provider-${PROVIDER}_v${VERSION_TAG} ${DIR}/terraform-provider-${PROVIDER}
 
 # Mod binary
 chmod +x ${DIR}/terraform-provider-${PROVIDER}
