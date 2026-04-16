@@ -92,6 +92,10 @@ func SetGKE(terraformConfig *config.TerraformConfig, terratestConfig *config.Ter
 	clusterAddOnsBlockBody.SetAttributeValue(horizontalPodAutoscaling, cty.BoolVal(true))
 
 	for count, pool := range terratestConfig.Nodepools {
+		if pool.Windows {
+			continue
+		}
+
 		poolNum := strconv.Itoa(count)
 
 		_, err := resources.SetResourceNodepoolValidation(terraformConfig, pool, poolNum)

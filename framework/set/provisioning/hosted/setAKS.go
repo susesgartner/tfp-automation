@@ -60,6 +60,10 @@ func SetAKS(terraformConfig *config.TerraformConfig, terratestConfig *config.Ter
 	availabilityZones := format.ListOfStrings(terraformConfig.AzureConfig.AvailabilityZones)
 
 	for count, pool := range terratestConfig.Nodepools {
+		if pool.Windows {
+			continue
+		}
+
 		poolNum := strconv.Itoa(count)
 
 		_, err := resources.SetResourceNodepoolValidation(terraformConfig, pool, poolNum)
