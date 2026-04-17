@@ -63,7 +63,7 @@ func (s *TfpSanityProvisioningTestSuite) TestTfpProvisioningSanity() {
 	var testUser, testPassword string
 	var clusterIDs []string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	s.standardUserClient, testUser, testPassword, err = standarduser.CreateStandardUser(s.client)
 	require.NoError(s.T(), err)
@@ -123,7 +123,7 @@ func (s *TfpSanityProvisioningTestSuite) TestTfpProvisioningSanity() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, s.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(s.T(), perTestTerraformOptions, keyPath)
 
-			clusters, customClusterNames := provisioning.Provision(s.T(), s.client, s.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, customClusterNames := provisioning.Provision(s.T(), s.client, s.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(s.client, clusters[0])
 			require.NoError(s.T(), err)
 
@@ -134,7 +134,7 @@ func (s *TfpSanityProvisioningTestSuite) TestTfpProvisioningSanity() {
 			require.NoError(s.T(), err)
 
 			if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-				clusters, customClusterNames = provisioning.Provision(s.T(), s.client, s.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, customClusterNames = provisioning.Provision(s.T(), s.client, s.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(s.client, clusters[0])
 				require.NoError(s.T(), err)
 
@@ -213,7 +213,7 @@ func (s *TfpSanityProvisioningTestSuite) TestTfpProvisioningSanityImported() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, s.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(s.T(), perTestTerraformOptions, keyPath)
 
-			clusters, _ := provisioning.Provision(s.T(), s.client, s.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, nil, nestedRancherModuleDir)
+			clusters, _ := provisioning.Provision(s.T(), s.client, s.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, "", nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(s.client, clusters[0])
 			require.NoError(s.T(), err)
 

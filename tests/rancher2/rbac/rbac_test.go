@@ -119,7 +119,7 @@ func (r *RBACTestSuite) TestTfpRBAC() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, r.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(r.T(), perTestTerraformOptions, keyPath)
 
-			clusters, _ := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, false, clusterIDs, nil, nestedRancherModuleDir)
+			clusters, _ := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, false, clusterIDs, "", nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 			require.NoError(r.T(), err)
 

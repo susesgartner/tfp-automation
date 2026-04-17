@@ -24,7 +24,7 @@ const (
 )
 
 // SetAirgapRKE2K3s is a function that will set the airgap RKE2/K3s cluster configurations in the main.tf file.
-func SetAirgapRKE2K3s(terraformConfig *config.TerraformConfig, terratestConfig *config.TerratestConfig, configMap []map[string]any,
+func SetAirgapRKE2K3s(terraformConfig *config.TerraformConfig, terratestConfig *config.TerratestConfig,
 	newFile *hclwrite.File, rootBody *hclwrite.Body, file *os.File) (*hclwrite.File, *os.File, error) {
 	v2.SetRancher2ClusterV2(rootBody, terraformConfig, terratestConfig)
 	rootBody.AppendNewline()

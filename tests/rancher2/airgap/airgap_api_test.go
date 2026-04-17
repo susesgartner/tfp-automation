@@ -96,7 +96,7 @@ func (a *AirgapAPITestSuite) TestTfpAirgapAPI() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, a.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(a.T(), a.terraformOptions, keyPath)
 
-			provisioning.AirgapUIOfflinePreferred(a.T(), a.terraformOptions, rancher, terraform, terratest, rootBody, newFile, file, tt.setting, []map[string]any{cattleConfig})
+			provisioning.AirgapUIOfflinePreferred(a.T(), a.terraformOptions, rancher, terraform, terratest, rootBody, newFile, file, tt.setting)
 		})
 
 		params := tfpQase.GetProvisioningSchemaParams(cattleConfig)

@@ -119,7 +119,7 @@ func (p *UpgradeImportedClusterTestSuite) TestTfpUpgradeImportedCluster() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, p.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(p.T(), perTestTerraformOptions, keyPath)
 
-			clusters, _ := provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, nil, nestedRancherModuleDir)
+			clusters, _ := provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, "", nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 			require.NoError(p.T(), err)
 

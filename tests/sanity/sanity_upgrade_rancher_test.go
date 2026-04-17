@@ -91,7 +91,7 @@ func (s *TfpSanityUpgradeRancherTestSuite) provisionAndVerifyCluster(name string
 	var clusterIDs []string
 	var nestedRancherModuleDir string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 	nodeRolesDedicated := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool}
 	nodeRolesWindows := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool, config.WindowsNodePool}
 	rke2Module, rke2Windows2019, rke2Windows2022, k3sModule := provisioning.DownstreamClusterModules(s.terraformConfig)
@@ -138,7 +138,7 @@ func (s *TfpSanityUpgradeRancherTestSuite) provisionAndVerifyCluster(name string
 
 				rancher, terraform, terratest, _ := config.LoadTFPConfigs(cattleConfig)
 
-				clusters, customClusterNames := provisioning.Provision(t, s.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, customClusterNames := provisioning.Provision(t, s.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(s.client, clusters[0])
 				require.NoError(t, err)
 
@@ -149,7 +149,7 @@ func (s *TfpSanityUpgradeRancherTestSuite) provisionAndVerifyCluster(name string
 				require.NoError(t, err)
 
 				if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-					clusters, customClusterNames = provisioning.Provision(t, s.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+					clusters, customClusterNames = provisioning.Provision(t, s.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 					err = provisioningActions.VerifyClusterReady(s.client, clusters[0])
 					require.NoError(t, err)
 

@@ -69,7 +69,7 @@ func (p *DynamicProvisionCustomTestSuite) TestTfpProvisionCustomDynamicInput() {
 	var testUser, testPassword string
 	var clusterIDs []string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	p.standardUserClient, testUser, testPassword, err = standarduser.CreateStandardUser(p.client)
 	require.NoError(p.T(), err)
@@ -109,7 +109,7 @@ func (p *DynamicProvisionCustomTestSuite) TestTfpProvisionCustomDynamicInput() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, p.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(p.T(), perTestTerraformOptions, keyPath)
 
-			clusters, customClusterNames := provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, customClusterNames := provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 			require.NoError(p.T(), err)
 
@@ -120,7 +120,7 @@ func (p *DynamicProvisionCustomTestSuite) TestTfpProvisionCustomDynamicInput() {
 			require.NoError(p.T(), err)
 
 			if strings.Contains(p.terraformConfig.Module, clustertypes.WINDOWS) {
-				clusters, _ = provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, _ = provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 				require.NoError(p.T(), err)
 

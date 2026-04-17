@@ -70,7 +70,7 @@ func (a *TfpAirgapProvisioningTestSuite) TestTfpAirgapProvisioning() {
 	var testUser, testPassword string
 	var clusterIDs []string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	a.standardUserClient, testUser, testPassword, err = standarduser.CreateStandardUser(a.client)
 	require.NoError(a.T(), err)
@@ -122,7 +122,7 @@ func (a *TfpAirgapProvisioningTestSuite) TestTfpAirgapProvisioning() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, a.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(a.T(), perTestTerraformOptions, keyPath)
 
-			clusters, customClusterNames := provisioning.Provision(a.T(), a.client, a.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, customClusterNames := provisioning.Provision(a.T(), a.client, a.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(a.client, clusters[0])
 			require.NoError(a.T(), err)
 
@@ -133,7 +133,7 @@ func (a *TfpAirgapProvisioningTestSuite) TestTfpAirgapProvisioning() {
 			require.NoError(a.T(), err)
 
 			if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-				clusters, _ = provisioning.Provision(a.T(), a.client, a.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, _ = provisioning.Provision(a.T(), a.client, a.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(a.client, clusters[0])
 				require.NoError(a.T(), err)
 

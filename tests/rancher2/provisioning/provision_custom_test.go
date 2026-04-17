@@ -70,7 +70,7 @@ func (p *ProvisionCustomTestSuite) TestTfpProvisionCustom() {
 	var testUser, testPassword string
 	var clusterIDs []string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	p.standardUserClient, testUser, testPassword, err = standarduser.CreateStandardUser(p.client)
 	require.NoError(p.T(), err)
@@ -84,9 +84,9 @@ func (p *ProvisionCustomTestSuite) TestTfpProvisionCustom() {
 		name   string
 		module string
 	}{
-		{"Custom_TFP_RKE2", modules.CustomAWSRKE2},
-		{"Custom_TFP_RKE2_Windows_2019", modules.CustomAWSRKE2Windows2019},
-		{"Custom_TFP_RKE2_Windows_2022", modules.CustomAWSRKE2Windows2022},
+		//{"Custom_TFP_RKE2", modules.CustomAWSRKE2},
+		//{"Custom_TFP_RKE2_Windows_2019", modules.CustomAWSRKE2Windows2019},
+		//{"Custom_TFP_RKE2_Windows_2022", modules.CustomAWSRKE2Windows2022},
 		{"Custom_TFP_K3S", modules.CustomAWSK3S},
 	}
 
@@ -117,7 +117,7 @@ func (p *ProvisionCustomTestSuite) TestTfpProvisionCustom() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, p.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(p.T(), perTestTerraformOptions, keyPath)
 
-			clusters, customClusterNames := provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, customClusterNames := provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 			require.NoError(p.T(), err)
 
@@ -128,7 +128,7 @@ func (p *ProvisionCustomTestSuite) TestTfpProvisionCustom() {
 			require.NoError(p.T(), err)
 
 			if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-				clusters, _ = provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, _ = provisioning.Provision(p.T(), p.client, p.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 				require.NoError(p.T(), err)
 

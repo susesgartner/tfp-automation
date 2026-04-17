@@ -100,7 +100,9 @@ func snapshotV2Prov(t *testing.T, client *rancher.Client, rancherConfig *rancher
 	_, err := operations.ReplaceValue([]string{"terratest", "snapshotInput", "createSnapshot"}, true, cattleConfig)
 	require.NoError(t, err)
 
-	_, _, err = framework.ConfigTF(client, rancherConfig, terratestConfig, testUser, testPassword, "", []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, false, nil, nestedRancherModuleDir)
+	_, parsedTerraformConfig, parsedTerratestConfig, _ := config.LoadTFPConfigs(cattleConfig)
+
+	_, _, err = framework.ConfigTF(client, rancherConfig, parsedTerratestConfig, testUser, testPassword, "", parsedTerraformConfig, newFile, rootBody, file, false, false, false, "", nestedRancherModuleDir)
 	require.NoError(t, err)
 
 	terraform.Apply(t, terraformOptions)
@@ -133,7 +135,9 @@ func restoreV2Prov(t *testing.T, client *rancher.Client, rancherConfig *rancher.
 	_, err = operations.ReplaceValue([]string{"terratest", "snapshotInput", "snapshotName"}, snapshotName, cattleConfig)
 	require.NoError(t, err)
 
-	_, _, err = framework.ConfigTF(client, rancherConfig, terratestConfig, testUser, testPassword, "", []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, false, nil, nestedRancherModuleDir)
+	_, parsedTerraformConfig, parsedTerratestConfig, _ := config.LoadTFPConfigs(cattleConfig)
+
+	_, _, err = framework.ConfigTF(client, rancherConfig, parsedTerratestConfig, testUser, testPassword, "", parsedTerraformConfig, newFile, rootBody, file, false, false, false, "", nestedRancherModuleDir)
 	require.NoError(t, err)
 
 	terraform.Apply(t, terraformOptions)

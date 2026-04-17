@@ -126,7 +126,7 @@ func (r *TfpRegistriesTestSuite) TestTfpAuthenticatedRegistry() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, r.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(r.T(), perTestTerraformOptions, keyPath)
 
-			clusters, _ := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, nil, nestedRancherModuleDir)
+			clusters, _ := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, "", nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 			require.NoError(r.T(), err)
 
@@ -224,7 +224,7 @@ func (r *TfpRegistriesTestSuite) TestTfpECRRegistry() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, r.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(r.T(), perTestTerraformOptions, keyPath)
 
-			clusters, _ := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, nil, nestedRancherModuleDir)
+			clusters, _ := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, "", nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 			require.NoError(r.T(), err)
 
@@ -256,7 +256,7 @@ func (r *TfpRegistriesTestSuite) TestTfpGlobalRegistry() {
 
 	nodeRolesAll := []config.Nodepool{config.AllRolesNodePool}
 	nodeRolesDedicated := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool}
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	r.standardUserClient, testUser, testPassword, err = standarduser.CreateStandardUser(r.client)
 	require.NoError(r.T(), err)
@@ -323,7 +323,7 @@ func (r *TfpRegistriesTestSuite) TestTfpGlobalRegistry() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, r.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(r.T(), perTestTerraformOptions, keyPath)
 
-			clusters, customClusterNames := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, customClusterNames := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 			require.NoError(r.T(), err)
 
@@ -336,7 +336,7 @@ func (r *TfpRegistriesTestSuite) TestTfpGlobalRegistry() {
 			provisioning.VerifyRegistry(r.T(), r.client, clusters[0].ID, terraform)
 
 			if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-				clusters, _ = provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, _ = provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 				require.NoError(r.T(), err)
 
@@ -378,7 +378,7 @@ func (r *TfpRegistriesTestSuite) TestTfpNonAuthenticatedRegistry() {
 	nodeRolesAll := []config.Nodepool{config.AllRolesNodePool}
 	nodeRolesDedicated := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool}
 	nodeRolesWindows := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool, config.WindowsNodePool}
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	tests := []struct {
 		name      string
@@ -436,7 +436,7 @@ func (r *TfpRegistriesTestSuite) TestTfpNonAuthenticatedRegistry() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, r.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(r.T(), perTestTerraformOptions, keyPath)
 
-			clusters, customClusterNames := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, customClusterNames := provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 			require.NoError(r.T(), err)
 
@@ -449,7 +449,7 @@ func (r *TfpRegistriesTestSuite) TestTfpNonAuthenticatedRegistry() {
 			provisioning.VerifyRegistry(r.T(), r.client, clusters[0].ID, terraform)
 
 			if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-				clusters, _ = provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, _ = provisioning.Provision(r.T(), r.client, r.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(r.client, clusters[0])
 				require.NoError(r.T(), err)
 

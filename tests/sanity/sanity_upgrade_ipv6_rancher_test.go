@@ -126,7 +126,7 @@ func (s *TfpSanityIPv6UpgradeRancherTestSuite) provisionAndVerifyCluster(name st
 
 				rancher, terraform, terratest, _ := config.LoadTFPConfigs(cattleConfig)
 
-				clusters, _ := provisioning.Provision(t, s.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, true, true, clusterIDs, nil, nestedRancherModuleDir)
+				clusters, _ := provisioning.Provision(t, s.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, true, true, clusterIDs, "", nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(s.client, clusters[0])
 				require.NoError(t, err)
 

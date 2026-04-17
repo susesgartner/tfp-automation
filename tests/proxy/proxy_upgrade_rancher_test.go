@@ -91,7 +91,7 @@ func (p *TfpProxyUpgradeRancherTestSuite) provisionAndVerifyCluster(name string,
 	var clusterIDs []string
 	var nestedRancherModuleDir string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 	nodeRolesDedicated := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool}
 	nodeRolesWindows := []config.Nodepool{config.EtcdNodePool, config.ControlPlaneNodePool, config.WorkerNodePool, config.WindowsNodePool}
 
@@ -138,7 +138,7 @@ func (p *TfpProxyUpgradeRancherTestSuite) provisionAndVerifyCluster(name string,
 
 				tt.name = name + tt.name
 
-				clusters, customClusterNames := provisioning.Provision(p.T(), p.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, customClusterNames := provisioning.Provision(p.T(), p.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 				require.NoError(p.T(), err)
 
@@ -149,7 +149,7 @@ func (p *TfpProxyUpgradeRancherTestSuite) provisionAndVerifyCluster(name string,
 				require.NoError(p.T(), err)
 
 				if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-					clusters, customClusterNames = provisioning.Provision(p.T(), p.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+					clusters, customClusterNames = provisioning.Provision(p.T(), p.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 					err = provisioningActions.VerifyClusterReady(p.client, clusters[0])
 					require.NoError(p.T(), err)
 

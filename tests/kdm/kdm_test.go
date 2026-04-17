@@ -66,7 +66,7 @@ func (k *KDMTestSuite) TestKDM() {
 	var testUser, testPassword string
 	var clusterIDs []string
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	rawKdm, err := provisioning.FetchSetting(k.client, "rke-metadata-config")
 	require.NoError(k.T(), err)
@@ -140,7 +140,7 @@ func (k *KDMTestSuite) TestKDM() {
 			_, keyPath := rancher2.SetKeyPath(keypath.RancherKeyPath, k.terratestConfig.PathToRepo, "")
 			defer cleanup.Cleanup(k.T(), perTestTerraformOptions, keyPath)
 
-			clusters, _ := provisioning.Provision(k.T(), k.client, k.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+			clusters, _ := provisioning.Provision(k.T(), k.client, k.standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, false, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 			err = provisioningActions.VerifyClusterReady(k.client, clusters[0])
 			require.NoError(k.T(), err)
 

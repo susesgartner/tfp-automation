@@ -99,7 +99,7 @@ func (a *TfpAirgapUpgradeRancherTestSuite) provisionAndVerifyCluster(name string
 	var nestedRancherModuleDir string
 	var clusters []*steveV1.SteveAPIObject
 
-	customClusterNames := []string{}
+	customClusterNames := ""
 
 	tests := []struct {
 		name   string
@@ -140,7 +140,7 @@ func (a *TfpAirgapUpgradeRancherTestSuite) provisionAndVerifyCluster(name string
 
 				rancher, terraform, terratest, _ := config.LoadTFPConfigs(cattleConfig)
 
-				clusters, customClusterNames = provisioning.Provision(t, a.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, false, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+				clusters, customClusterNames = provisioning.Provision(t, a.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, false, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 				err = provisioningActions.VerifyClusterReady(a.client, clusters[0])
 				require.NoError(t, err)
 
@@ -151,7 +151,7 @@ func (a *TfpAirgapUpgradeRancherTestSuite) provisionAndVerifyCluster(name string
 				require.NoError(t, err)
 
 				if strings.Contains(terraform.Module, clustertypes.WINDOWS) {
-					clusters, customClusterNames = provisioning.Provision(t, a.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, []map[string]any{cattleConfig}, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
+					clusters, customClusterNames = provisioning.Provision(t, a.client, standardUserClient, rancher, terraform, terratest, testUser, testPassword, perTestTerraformOptions, newFile, rootBody, file, true, true, true, clusterIDs, customClusterNames, nestedRancherModuleDir)
 					err = provisioningActions.VerifyClusterReady(a.client, clusters[0])
 					require.NoError(t, err)
 
